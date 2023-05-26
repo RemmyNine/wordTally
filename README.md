@@ -21,7 +21,7 @@ WordTally is a Python script that allows you to analyze text files and generate 
 git clone https://github.com/your-username/WordTally.git
 
 2. Navigate to the project directory:
-`cd wordTotally`
+cd wordTotally
 
 ## Usage
 python wordtally.py -l <file_path> [-e <exclude_words>] [-t <top_words>] [-p]
@@ -32,4 +32,4 @@ Options
 -p or --percentage: Show the percentage of each word in relation to the total number of words.
 
 Example
-``` python wordtally.py -l sample.txt -e the and -t 10 -p ```
+ python wordtally.py -l sample.txt -e the and -t 10 -p
