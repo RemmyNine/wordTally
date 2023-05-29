@@ -18,7 +18,7 @@ WordTally is a Python script that allows you to analyze text files and generate 
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/WordTally.git
+git clone https://github.com/RemmyNine/WordTally.git
 
 2. Navigate to the project directory:
 cd wordTotally
