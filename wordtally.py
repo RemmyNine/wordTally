@@ -4,7 +4,7 @@ import argparse
 from collections import Counter
 import re
 
-def analyze_text(file_path, exclude_list, show_top, show_percentage):
+def analyze_text(file_path, exclude_list, show_top, show_percentage, min_length, max_length, output=None):
     try:
         with open(file_path, "r") as file:
             text = file.read()
@@ -16,7 +16,7 @@ def analyze_text(file_path, exclude_list, show_top, show_percentage):
     words = re.split(r"[.,\-\s]+", text)
 
     # Exclude specified words
-    filtered_words = [word for word in words if word.lower() not in exclude_list]
+    filtered_words = [word for word in words if word.lower() not in exclude_list and min_length <= len(word) <= max_length]
 
     # Count the occurrence of each word
     word_count = Counter(filtered_words)
@@ -26,10 +26,22 @@ def analyze_text(file_path, exclude_list, show_top, show_percentage):
 
     total_words = sum(word_count.values())
 
+    final_words = []
+
     print(f"The {show_top} most repeated words:")
     for word, count in most_common_words:
         percentage = (count / total_words) * 100
         print(f"'{word}': {count} ({percentage:.2f}%)" if show_percentage else f"'{word}': {count}")
+        final_words.append(word)
+
+    if output:
+        try:
+            with open(output, "w") as file:
+                file.write("\n".join(final_words))
+            print(f"Output saved to {output}.")
+        except IOError:
+            print("Error writing to the output file.")
+            return
 
 
 if __name__ == "__main__":
@@ -38,6 +50,9 @@ if __name__ == "__main__":
     parser.add_argument("-e", "--exclude", nargs="*", default=[], help="Words to exclude from analysis")
     parser.add_argument("-t", "--top", type=int, default=5, help="Number of most repeated words to show")
     parser.add_argument("-p", "--percentage", action="store_true", help="Show the percentage of each word")
+    parser.add_argument("--min-length", type=int, default=0, help="Minimum length of words to include")
+    parser.add_argument("--max-length", type=int, default=float('inf'), help="Maximum length of words to include")
+    parser.add_argument("-o", "--output", help="Save output to file")
     args = parser.parse_args()
 
-    analyze_text(args.file_path, args.exclude, args.top, args.percentage)
+    analyze_text(args.file_path, args.exclude, args.top, args.percentage, args.min_length, args.max_length, args.output)
