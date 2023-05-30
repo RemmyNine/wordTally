@@ -30,6 +30,13 @@ Options
 -e <exclude_words> or --exclude <exclude_words>: Specify words to exclude from the analysis. Separate multiple words with spaces.
 -t <top_words> or --top <top_words>: Set the number of most repeated words to display. Default value is 5 if not specified.
 -p or --percentage: Show the percentage of each word in relation to the total number of words.
+--min-length MIN_LENGTH
+                        Minimum length of words to include
+--max-length MAX_LENGTH
+                        Maximum length of words to include
+  -o OUTPUT, --output OUTPUT
+                        Save output to file
+
 
 Example
  python wordtally.py -l sample.txt -e the and -t 10 -p
