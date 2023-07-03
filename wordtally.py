@@ -2,15 +2,11 @@
 
 import argparse
 from collections import Counter
+import sys
 import re
 
-def analyze_text(file_path, exclude_list, show_top, show_percentage, min_length, max_length, output=None):
-    try:
-        with open(file_path, "r") as file:
-            text = file.read()
-    except FileNotFoundError:
-        print("File not found.")
-        return
+
+def analyze_text(text, exclude_list, show_top, show_percentage, min_length, max_length, output=None):
 
     # Split the text into words based on separators
     words = re.split(r"[.,\-\s]+", text)
@@ -46,7 +42,7 @@ def analyze_text(file_path, exclude_list, show_top, show_percentage, min_length,
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Analyze a text file and find the most repeated words.")
-    parser.add_argument("-l", "--file-path", required=True, help="Path to the text file")
+    parser.add_argument("-l", "--file-path", help="Path to the text file")
     parser.add_argument("-e", "--exclude", nargs="*", default=[], help="Words to exclude from analysis")
     parser.add_argument("-t", "--top", type=int, default=5, help="Number of most repeated words to show")
     parser.add_argument("-p", "--percentage", action="store_true", help="Show the percentage of each word")
@@ -55,4 +51,21 @@ if __name__ == "__main__":
     parser.add_argument("-o", "--output", help="Save output to file")
     args = parser.parse_args()
 
-    analyze_text(args.file_path, args.exclude, args.top, args.percentage, args.min_length, args.max_length, args.output)
+    text = ""
+
+    if args.file_path is not None:
+        try:
+            with open(file_path, "r") as file:
+                text = file.read()
+        except FileNotFoundError:
+            print("File not found.")
+            exit()
+    else:
+        if sys.stdin.isatty():
+            print("stdin is empty")
+            exit()
+        else:
+            text = sys.stdin.read()
+
+
+    analyze_text(text, args.exclude, args.top, args.percentage, args.min_length, args.max_length, args.output)
